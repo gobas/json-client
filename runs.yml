@@ -17,27 +17,7 @@ user:
     email: seb@gobas.de
 
 creations:
-#Syntax:
-#
-#<user>:                        #user name, unter dem folgendes geschehen soll
-#  {topics, medias}: <number>   #Legt number viele topics, medias an
-#  invite:
-#    user: <user>               #Lädt <user> für <number> viele random
-#    number_t: <number>         #topics ein
-#  user:
-#    <user>:                    #Legt einen neuen Benutzer an,
-#    .......                    #nach dem Schema, wie oben
- 
   1:
-    roman:
-      topics: 3
-      medias: 6
-  2:
-    aaron:
-      topics: 1
-      medias: 3
-  3:
-    seb:
-      topics: 2
-      medias: 3
-
+    test:
+      topics: 0
+      medias: 1

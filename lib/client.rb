@@ -6,10 +6,10 @@ require 'rest_client'
 require 'usersession'
 
 def first_user
-  return VUser.new(:user => "seb", :host => "failinc.sharenotes.de")
+  return VUser.new(:user => @@first_user[:user], :port => @@first_user[:port], :host => @@first_user[:host])
 end
 def second_user
-  return VUser.new(:user => "aaron", :host => "failinc.sharenotes.de")
+  return VUser.new(:user => @@second_user[:user], :port => @@second_user[:port], :host => @@second_user[:host])
 end
 
 def reload

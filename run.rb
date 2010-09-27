@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+$LOAD_PATH << File.dirname(__FILE__) + '/lib'
 require 'client'
 require 'yaml'
 
@@ -8,6 +9,23 @@ require 'yaml'
 
 # Sample Images
 @samp_images = "../sample/images"
+@samp_videos = "../sample/videos"
+@samp_audios = "../sample/audio"
+
+# Global Config
+@host = "failinc.localhost.local"
+@port = "8080"
+
+# First and Second Default User
+@@first_user = {}
+@@first_user[:user] = "test"
+@@first_user[:host] = @host
+@@first_user[:port] = @port
+
+@@second_user = {}
+@@second_user[:user] = "aaron"
+@@second_user[:host] = @host
+@@second_user[:port] = @port
 
 # Load Test runs
 $runs = YAML.load_file("./runs.yml")
@@ -92,7 +110,7 @@ def creations
   running_order.size.times do
     run = running_order[i]
     $runs['creations'][run].each_pair do |k, v|
-      user= VUser.new(:user => k, :host => "failinc.localhost.local")
+      user= VUser.new(:user => k, :host => @host, :port => @port)
       #$LOG << v.inspect
       v.each_pair do |ke, va|
         if ke == "topics" then
@@ -176,6 +194,6 @@ end
 
 
 # RUN
-create_user
-#creations
+#create_user
+creations
 print_log
