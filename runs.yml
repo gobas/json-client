@@ -20,4 +20,6 @@ creations:
   1:
     test:
       topics: 0
-      medias: 1
+      images: 0
+      videos: 0
+      audios: 0

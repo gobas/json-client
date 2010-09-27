@@ -38,11 +38,17 @@ User Syntax:
       email: <email>
 
 Creations Syntax:
-    <user>:                        #user name, unter dem folgendes geschehen soll
-      {topics, medias}: <number>   #Legt number viele topics, medias an
-      invite:
-        user: <user>               #Lädt <user> für <number> viele random
-        number_t: <number>         #topics ein
-      user:
-        <user>:                    #Legt einen neuen Benutzer an,
-        .......                    #nach dem Schema, wie oben
+    <number>                        #running order
+      <user>:                       #user name, unter dem folgendes geschehen soll
+        topics: <number>            #Legt number viele topics an
+        images: <number>            #Legt number viele images an
+        videos: <number>            #Legt number viele videos an
+        audios: <number>            #Legt number viele audios an
+        invites:
+          user: <user>              #Lädt <user> für <number> viele random
+          number_t: <number>        # topics ein
+        accept: <number>            #akzeptiert number viele invites
+        ignore: <number>            #ignoriert number viele inites
+        user:
+          <user>:                   #Legt einen neuen Benutzer an,
+          .......                   # nach dem User Schema, wie oben

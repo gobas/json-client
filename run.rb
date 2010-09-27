@@ -33,18 +33,30 @@ $runs = YAML.load_file("./runs.yml")
 # Log
 $LOG = []
 
-def get_sample_images number=1
-  files = Dir.entries(@samp_images)
-  img = []
+def get_sample_media type, number=1
+  case type
+  when "image"
+    path = @samp_images
+  when "video"
+    path = @samp_videos
+  when "audio"
+    path = @samp_audios
+  else
+    puts "You have to choose the right type for medias!"
+    path = ""
+  end
+  
+  files = Dir.entries(path)
+  media = []
   number.times do
     ra = rand(files.size)
     if ra <= 2 then ra+2 end
-    img << @samp_images+"/"+files[ra]
+    media << path+"/"+files[ra]
   end
   if number == 1 then
-    return img[0].to_s
+    return media[0].to_s
   else
-    return img
+    return media
   end
 end
 
@@ -65,7 +77,7 @@ end
 def create_user
   $runs['user'].each_value do |user|
     puts user.inspect
-    first_user.create_user({ :login => user['login'], :password => user['password'], :email => user['email'] }, get_sample_images.to_s)
+    first_user.create_user({ :login => user['login'], :password => user['password'], :email => user['email'] }, get_sample_media("image").to_s)
     $LOG << "Created user #{user['login']}"
   end
 end
@@ -120,19 +132,37 @@ def creations
             $LOG << "(#{run})Created Topic #{s} for user #{user.account.login}"
           end
         end
-        if ke == "medias" then
+        if ke == "images" then
           va.times do
             s = random_string
-            img = get_sample_images
+            img = get_sample_media("image")
             top = get_random_topic(user)
             top.create_media({:title => s}, img)
-            $LOG << "(#{run})Created Media #{s} in Topic #{top.name} with image #{img}"
+            $LOG << "(#{run})Created Image #{s} in Topic #{top.name} with image #{img}"
+          end
+        end
+        if ke == "videos" then
+          va.times do
+            s = random_string
+            vid = get_sample_media("video")
+            top = get_random_topic(user)
+            top.create_media({:title => s, :notice => random_string}, vid)
+            $LOG << "(#{run})Created Video #{s} in Topic #{top.name} with video #{vid}"
+          end
+        end
+        if ke == "audios" then
+          va.times do
+            s = random_string
+            aud = get_sample_media("audio")
+            top = get_random_topic(user)
+            top.create_media({:title => s, :notice => random_string}, aud)
+            $LOG << "(#{run})Created Audio #{s} in Topic #{top.name} with audio #{aud}"
           end
         end
         #User von User erstellen lassen is evtl. noch bisschen crap
         if ke == "user" then 
           va.each_value do |param|
-            user.create_user({ :login => param['login'], :password => param['password'], :email => param['email'] }, get_sample_images.to_s)
+            user.create_user({ :login => param['login'], :password => param['password'], :email => param['email'] }, get_sample_media("image").to_s)
             $LOG << "(#{run})Created User #{param['login']} with user #{user.account.login}"
           end
         end
