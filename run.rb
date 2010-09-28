@@ -17,15 +17,15 @@ require 'yaml'
 @port = "8080"
 
 # First and Second Default User
-@@first_user = {}
-@@first_user[:user] = "test"
-@@first_user[:host] = @host
-@@first_user[:port] = @port
+@first_user = {}
+@first_user[:user] = "test"
+@first_user[:host] = @host
+@first_user[:port] = @port
 
-@@second_user = {}
-@@second_user[:user] = "aaron"
-@@second_user[:host] = @host
-@@second_user[:port] = @port
+@second_user = {}
+@second_user[:user] = "aaron"
+@second_user[:host] = @host
+@second_user[:port] = @port
 
 # Load Test runs
 $runs = YAML.load_file("./runs.yml")

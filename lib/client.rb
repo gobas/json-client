@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+$LOAD_PATH << File.dirname(__FILE__)
 require 'rubygems'
 require 'json'
 require 'pp'
@@ -6,10 +7,12 @@ require 'rest_client'
 require 'usersession'
 
 def first_user
-  return VUser.new(:user => @@first_user[:user], :port => @@first_user[:port], :host => @@first_user[:host])
+  @first_user = {:user => "test", :port => "8080", :host => "failinc.localhost.local"} if @first_user.nil?
+  return VUser.new(:user => @first_user[:user], :port => @first_user[:port], :host => @first_user[:host])
 end
 def second_user
-  return VUser.new(:user => @@second_user[:user], :port => @@second_user[:port], :host => @@second_user[:host])
+  @second_user = {:user => "aaron", :port => "8080", :host => "failinc.localhost.local"} if @second_user.nil?
+  return VUser.new(:user => @second_user[:user], :port => @second_user[:port], :host => @second_user[:host])
 end
 
 def reload
