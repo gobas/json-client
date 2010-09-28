@@ -19,7 +19,7 @@ user:
 creations:
   1:
     test:
-      topics: 0
-      images: 0
-      videos: 0
-      audios: 0
+      topics: 1
+      images: 1
+      videos: 1
+      audios: 1

@@ -76,36 +76,34 @@ end
 
 def create_user
   $runs['user'].each_value do |user|
-    puts user.inspect
     first_user.create_user({ :login => user['login'], :password => user['password'], :email => user['email'] }, get_sample_media("image").to_s)
     $LOG << "Created user #{user['login']}"
   end
 end
 
 def get_random_topic user, count=1
-  top_count = user.topics.size
-  n = rand(top_count)
-  
+  user_topics = user.topics
+  top_count = user_topics.size
+
   if count == 1 then
     if top_count >= 1 then
-      return user.topics[n]
+      return user_topics[rand(top_count)]
     end
     if top_count == 0 then
       return user.create_topic :name => random_string
     end
   else
-  
     ar = []
     if top_count >= count then
       count.times do
-        ar << user.topics[n]
         n = rand(top_count)
+        ar << user_topics[n]
       end
       return ar
     else
       top_count.times do
-        ar << user.topics[n]
         n = rand(top_count)
+        ar << user_topics[n]
       end
       (count - top_count).times do
         ar << (user.create_topic :name => random_string(15))
@@ -123,16 +121,15 @@ def creations
     run = running_order[i]
     $runs['creations'][run].each_pair do |k, v|
       user= VUser.new(:user => k, :host => @host, :port => @port)
-      #$LOG << v.inspect
       v.each_pair do |ke, va|
-        if ke == "topics" then
+        case ke
+        when "topics"
           va.times do
             s = random_string
             user.create_topic :name => s
             $LOG << "(#{run})Created Topic #{s} for user #{user.account.login}"
           end
-        end
-        if ke == "images" then
+        when "images"
           va.times do
             s = random_string
             img = get_sample_media("image")
@@ -140,8 +137,7 @@ def creations
             top.create_media({:title => s}, img)
             $LOG << "(#{run})Created Image #{s} in Topic #{top.name} with image #{img}"
           end
-        end
-        if ke == "videos" then
+        when "videos"
           va.times do
             s = random_string
             vid = get_sample_media("video")
@@ -149,8 +145,7 @@ def creations
             top.create_media({:title => s, :notice => random_string}, vid)
             $LOG << "(#{run})Created Video #{s} in Topic #{top.name} with video #{vid}"
           end
-        end
-        if ke == "audios" then
+        when "audios"
           va.times do
             s = random_string
             aud = get_sample_media("audio")
@@ -158,15 +153,12 @@ def creations
             top.create_media({:title => s, :notice => random_string}, aud)
             $LOG << "(#{run})Created Audio #{s} in Topic #{top.name} with audio #{aud}"
           end
-        end
-        #User von User erstellen lassen is evtl. noch bisschen crap
-        if ke == "user" then 
+        when "user"
           va.each_value do |param|
             user.create_user({ :login => param['login'], :password => param['password'], :email => param['email'] }, get_sample_media("image").to_s)
             $LOG << "(#{run})Created User #{param['login']} with user #{user.account.login}"
           end
-        end
-        if ke == "invites" then
+        when "invites"
           va.each_pair do |u, n|
             invited_user = VUser.new :user => u
             if n == 1 then
@@ -187,8 +179,7 @@ def creations
             #  $LOG << "(#{run})User #{user.account.login} invited #{u} for Topic #{top.name}, #{n} in total"
             #end
           end
-        end
-        if ke == "accept" then
+        when "accept"
           i = 0
           invites = user.invites
           i_before = user.invites.size
@@ -201,8 +192,7 @@ def creations
           else
             $LOG << "#{run})User #{user.account.login} wants to accept an invitation, but has no one"
           end
-        end
-        if ke == "ignore" then
+        when "ignore"
           i = 0
           invites = user.invites
           i_before = user.invites.size
@@ -215,6 +205,8 @@ def creations
           else
             $LOG << "(#{run})User #{user.account.login} wants to ignore an invitation, but has no one"
           end
+        else
+          $LOG << "#{ke} is a wrong keyword!"
         end
       end
     end
