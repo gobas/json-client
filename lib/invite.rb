@@ -9,7 +9,7 @@ class Invite < VUser
   end
   
   def accept
-    Invite.accept self.session, self.topic_id, self.uuid
+    Invite.accept self.session, self.topic["uuid"], self.uuid
   end
   
   def ignore 
@@ -19,8 +19,8 @@ class Invite < VUser
   def self.all session
     puts "Getting User Invites"
     invites = session.get(:path => "/account/invites.json")
-    invites.collect! {|topic| make_obj(topic, session)}
-    return invites
+    invites["invites"].collect! {|invite| make_obj({"invite" => invite}, session)}
+    return invites["invites"]
   end
   
   def self.accept session, uuid, id

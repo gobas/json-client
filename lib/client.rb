@@ -7,11 +7,11 @@ require 'rest_client'
 require 'usersession'
 
 def first_user
-  @first_user = {:user => "test", :port => "8080", :host => "failinc.localhost.local"} if @first_user.nil?
+  @first_user = {:user => "test%40test.de", :port => "3000", :host => "localhost"} if @first_user.nil?
   return VUser.new(:user => @first_user[:user], :port => @first_user[:port], :host => @first_user[:host])
 end
 def second_user
-  @second_user = {:user => "aaron", :port => "8080", :host => "failinc.localhost.local"} if @second_user.nil?
+  @second_user = {:user => "me%40a0n.name", :port => "3000", :host => "localhost"} if @second_user.nil?
   return VUser.new(:user => @second_user[:user], :port => @second_user[:port], :host => @second_user[:host])
 end
 
