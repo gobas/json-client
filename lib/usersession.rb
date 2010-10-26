@@ -81,7 +81,16 @@ class UserSession
     end
   
   def server_path
-    return "http://#{self.user}:#{self.password}@#{self.host}:#{self.port}"
+    if self.user.is_a?(Hash)
+      username = self.user["email"]
+      if username.nil? || username.blank?
+        username = self.user[:email].sub("@", "%40")
+      end
+    else
+      username = self.user
+    end
+    
+    return "http://#{username}:#{self.password}@#{self.host}:#{self.port}"
   end
   def parse_json(response)
   

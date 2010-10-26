@@ -94,8 +94,8 @@ class Topic < VUser
     puts "Getting all Topics"
     puts session
     topics =  session.get(:path => "/topics.json")
-    topics.collect! {|topic| make_obj(topic, session)}
-    return topics
+    xx = topics["topics"].collect! {|topic| make_obj({"topic" => topic}, session)}
+    return xx
   end
   
   def self.get session, uuid

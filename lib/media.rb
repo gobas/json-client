@@ -16,6 +16,10 @@ class Media < VUser
     Media.delete self.session, self
   end
   
+  def destroy
+    Media.delete self.session, self
+  end
+  
   def update attributes, file = nil
     Media.update self.session, self, attributes, file
   end
@@ -32,6 +36,9 @@ class Media < VUser
     Media.unread self.session, self
   end
   
+  def move topic
+    Media.move self.session, self, topic
+  end
   
   def get_from_convert
     puts "Getting Media File from Convert Controller"
@@ -48,7 +55,7 @@ class Media < VUser
     puts "Getting all Media Items of Topics #{topic_id}"
     path = topic_id == "inbox" ? "/account/inbox" : "/topics/#{topic_id}"
     
-    medias = session.get(:path => "#{path}/medias.json").collect! {|media| make_obj(media, session)}
+    medias = session.get(:path => "#{path}/medias.json")["medias"].collect! {|media| make_obj(media, session)}
     return medias
   end
   
@@ -111,6 +118,13 @@ class Media < VUser
     media_id = media_id.class.superclass == Media ? media_id.uuid : media_id
     puts "Reading Media with UUID: #{media_id}"
     return session.put(:path => "/medias/#{media_id}/read.json", :params => {:unread => true})
+  end
+  
+  def self.move session, media_id, topic_id
+    media_id = media_id.class.superclass == Media ? media_id.uuid : media_id
+    topic_id = topic_id.is_a?(String) ? topic_id : topic_id.uuid 
+    puts "Moving Media with UUID: #{media_id} to topic_id: #{topic_id}"
+    return session.put(:path => "/medias/#{media_id}/move.json", :params => {:topic => topic_id})
   end
   
   def self.unread session, media_id

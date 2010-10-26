@@ -70,6 +70,10 @@ class VUser
     Topic.get self.session, id
   end
   
+  def checkuser user, password
+    return session.post(:path => "/check_login", :params => {:user => {:email => user, :password => password}.to_json})
+  end
+  
   def create_topic attributes
     unless attributes.is_a? Hash
       if attributes.is_a? String
@@ -77,6 +81,10 @@ class VUser
       end
     end
     Topic.create self.session, attributes 
+  end
+  
+  def create_customer attributes
+    Customer.create self.session, attributes
   end
   
   def users
@@ -112,3 +120,4 @@ require 'user.rb'
 require 'invite.rb'
 require 'account'
 require 'change'
+require 'customer'
