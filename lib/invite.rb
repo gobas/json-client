@@ -13,7 +13,7 @@ class Invite < VUser
   end
   
   def ignore 
-    Invite.destroy self.session, self.topic_id, self.uuid
+    Invite.destroy self.session, self.topic["uuid"], self.uuid
   end
 
   def self.all session

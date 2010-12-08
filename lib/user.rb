@@ -28,8 +28,8 @@ class User < VUser
 
   def self.all session
     puts "Getting Users"
-    users = session.get(:path => "/users.json")
-    users.collect! {|user| make_obj(user, session)}
+    users = session.get(:path => "/users.json")["users"]
+    users.collect! {|user| make_obj({"user" => user}, session)}
     #users.collect! {|user| user.session = session }
     return users
   end

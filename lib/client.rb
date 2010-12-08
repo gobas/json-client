@@ -15,6 +15,15 @@ def second_user
   return VUser.new(:user => @second_user[:user], :port => @second_user[:port], :host => @second_user[:host])
 end
 
+
+def create_users host, port, users = ["ai@gobas.de", "rl@gobas.de", "test@test.de"]
+  ruser =[]
+  for user in users
+    ruser << VUser.new({:user => user, :port => port, :host => host})
+  end
+  return ruser
+end
+
 def reload
   load "client.rb"
   load 'topic.rb'

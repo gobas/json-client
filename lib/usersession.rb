@@ -90,7 +90,7 @@ class UserSession
       username = self.user
     end
     
-    return "http://#{username}:#{self.password}@#{self.host}:#{self.port}"
+    return "http://#{username.sub("@", "%40")}:#{self.password}@#{self.host}:#{self.port}"
   end
   def parse_json(response)
   

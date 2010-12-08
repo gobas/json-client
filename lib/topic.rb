@@ -107,14 +107,25 @@ class Topic < VUser
 
   def self.create session, attributes
     puts "Creating Topic"
-    return Topic.new(attributes.merge(:uuid => session.post(:path => "/topics.json", :params => {:topic=> attributes.to_json})["uuid"]))
+    unless attributes["location"].nil?
+      location = attributes["location"]
+      attributes.delete("location")
+      return Topic.new(attributes.merge(:uuid => session.post(:path => "/topics.json", :params => {:topic=> attributes.to_json, :location => location.to_json})["uuid"]))      
+    else
+      return Topic.new(attributes.merge(:uuid => session.post(:path => "/topics.json", :params => {:topic=> attributes.to_json})["uuid"]))
+    end
   end 
   
   def self.update session, uuid, attributes    
     uuid = uuid.class == Topic ? uuid.uuid : uuid
     puts "Updating Topic with UUID: #{uuid}"
-    
-    return session.put(:path => "/topics/#{uuid}.json", :params => {:topic => attributes.to_json})
+    unless attributes["location"].nil?
+      location = attributes["location"]
+      attributes.delete("location")
+      return session.put(:path => "/topics/#{uuid}.json", :params => {:topic => attributes.to_json, :location => location.to_json})
+    else
+      return session.put(:path => "/topics/#{uuid}.json", :params => {:topic => attributes.to_json})
+    end
     #status = session.put(:path => "/topics/#{uuid}.json", :params => "topic='#{attributes.to_json}'")
     #if status["ok"] == true
     #  Topic.get status["id"]
